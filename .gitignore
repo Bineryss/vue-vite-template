@@ -28,3 +28,8 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+.pnpm-store
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
