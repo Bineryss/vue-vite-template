@@ -1,12 +1,10 @@
-name: Build Project
+name: build project
 on:
     push:
         branches:
             - main
 jobs:
-    build:
-        permissions:
-            contents: write
+    test:
         runs-on: ubuntu-latest
         steps:
             - name: checkout repo
@@ -20,15 +18,60 @@ jobs:
                 cache: 'pnpm'
             - name: install dependencies
               run: pnpm install
-            - name: run playwrigth test
-              run: pnpm dlx playwright install --with-deps
             - name: run unit tests
               run: pnpm run test:unit
+    type-check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repo
+              uses: actions/checkout@v4
+            - name: setup pnpm
+              uses: pnpm/action-setup@v4
+            - name: setup node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 22
+                cache: 'pnpm'
+            - name: install dependencies
+              run: pnpm install
             - name: run type check
               run: pnpm run type-check
-            - name: build app
-              run: pnpm run build:only
+    build:
+        needs:
+            - type-check
+            - test
+        runs-on: ubuntu-latest
+        steps:
+          - name: checkout repo
+            uses: actions/checkout@v4
+          - name: setup pnpm
+            uses: pnpm/action-setup@v4
+          - name: setup node
+            uses: actions/setup-node@v4
+            with:
+              node-version: 22
+              cache: 'pnpm'
+          - name: install dependencies
+            run: pnpm install
+          - name: build app
+            run: pnpm run build:only
+    release:
+        permissions:
+            contents: write
+            issues: write
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repo
+              uses: actions/checkout@v4
+            - name: setup pnpm
+              uses: pnpm/action-setup@v4
+            - name: setup node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 22
+                cache: 'pnpm'
             - name: create release
               run: pnpm dlx semantic-release
               env:
-                  GITHUB_TOKEN: ${{secrets.SEMANTIC_RELEASE_TOKEN}}
+                GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -1,4 +1,4 @@
-name: playwrigth tests
+name: run playwrigth tests
 on:
     push:
         branches: [main]
