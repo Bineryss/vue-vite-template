@@ -4,8 +4,7 @@ on:
         branches:
             - main
 jobs:
-    e2e-test:
-        timeout-minutes: 60
+    build:
         runs-on: ubuntu-latest
         steps:
             - name: checkout repo
@@ -21,25 +20,10 @@ jobs:
               run: pnpm install
             - name: run playwrigth test
               run: pnpm dlx playwright install --with-deps
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout repo
-              uses: actions/checkout@v4
-            - name: setup pnpm
-              uses: pnpm/action-setup@v4
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                node-version: 22
-                cache: 'pnpm'
-            - name: install dependencies
-              run: pnpm install
             - name: run unit tests
               run: pnpm run test:unit
-    type-check:
-        runs-on: ubuntu-latest
-        steps:
+            - name: run type check
+              run: pnpm run type-check
             - name: checkout repo
               uses: actions/checkout@v4
             - name: setup pnpm
@@ -51,42 +35,9 @@ jobs:
                 cache: 'pnpm'
             - name: install dependencies
               run: pnpm install
-            - name: run type check
-              run: pnpm run type-check
-    build:
-        needs:
-            - type-check
-            - test
-            - e2e-test
-        runs-on: ubuntu-latest
-        steps:
-          - name: checkout repo
-            uses: actions/checkout@v4
-          - name: setup pnpm
-            uses: pnpm/action-setup@v4
-          - name: setup node
-            uses: actions/setup-node@v4
-            with:
-              node-version: 22
-              cache: 'pnpm'
-          - name: install dependencies
-            run: pnpm install
-          - name: build app
-            run: pnpm run build:only
-    release:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout repo
-              uses: actions/checkout@v4
-            - name: setup pnpm
-              uses: pnpm/action-setup@v4
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                node-version: 22
-                cache: 'pnpm'
+            - name: build app
+              run: pnpm run build:only
             - name: create release
               run: pnpm dlx semantic-release
               env:
-                GITHUB_TOKEN: ${{secrets.SEMANTIC_RELEASE_TOKEN}}
+                  GITHUB_TOKEN: ${{secrets.SEMANTIC_RELEASE_TOKEN}}
