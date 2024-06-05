@@ -134,5 +134,3 @@ jobs:
                 path: ./playwright-report
             - name: create release
               run: pnpm dlx semantic-release
-              env:
-                GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
