@@ -4,12 +4,13 @@
     "plugins": [
         "@semantic-release/commit-analyzer", 
         "@semantic-release/release-notes-generator", 
-        ["@semantic-release/github", {
+        [
+          "@semantic-release/github", {
             "assets": [
               {"path": "dist/**", "label": "build output"},
               {"path": "playwright-report/**", "label": "e2e report"},
-              {"path": "dist/test-report.html", "label": "unit test report"}
-]}
-    ]]
+              {"path": "dist/test-report.html", "label": "unit test report"}]}
+    ]
+  ]
   }
 }
