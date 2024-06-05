@@ -55,6 +55,13 @@ jobs:
             run: pnpm install
           - name: build app
             run: pnpm run build:only
+          - name: upload build results
+            uses: actions/upload-artifact@v4
+            if: always()
+            with:
+              name: dist
+              path: dist/**
+              retention-days: 30
     release:
         permissions:
             contents: write
