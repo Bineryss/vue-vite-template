@@ -3,18 +3,21 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
-  plugins: ['only-warn'],
-  extends: [
+  'extends': [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier/skip-formatting',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    '@vue/eslint-config-prettier/skip-formatting'
   ],
   overrides: [
     {
-      files: ['cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}', 'cypress/support/**/*.{js,ts,jsx,tsx}'],
-      extends: ['plugin:cypress/recommended']
+      files: [
+        'e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'
+      ],
+      'extends': [
+        'plugin:playwright/recommended'
+      ]
     }
   ],
   parserOptions: {
