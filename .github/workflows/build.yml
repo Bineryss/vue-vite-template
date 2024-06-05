@@ -1,4 +1,4 @@
-name: build
+name: Build Project
 on:
     push:
         branches:
@@ -24,17 +24,6 @@ jobs:
               run: pnpm run test:unit
             - name: run type check
               run: pnpm run type-check
-            - name: checkout repo
-              uses: actions/checkout@v4
-            - name: setup pnpm
-              uses: pnpm/action-setup@v4
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                node-version: 22
-                cache: 'pnpm'
-            - name: install dependencies
-              run: pnpm install
             - name: build app
               run: pnpm run build:only
             - name: create release
