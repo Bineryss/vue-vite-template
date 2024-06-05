@@ -5,9 +5,11 @@
         "@semantic-release/commit-analyzer", 
         "@semantic-release/release-notes-generator", 
         ["@semantic-release/github", {
-            "assets": ["dist/**", "playwright-report/", "test-result/"]
-        }
-]
-    ]
+            "assets": [
+              {"path": "dist/**", "label": "build output"},
+              {"path": "playwright-report/**", "label": "e2e report"},
+              {"path": "dist/test-report.html", "label": "unit test report"}
+]}
+    ]]
   }
 }

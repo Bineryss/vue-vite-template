@@ -62,3 +62,5 @@ pnpm test:e2e --debug
 ```sh
 pnpm lint
 ```
+### For act
+--artifact-server-path /home/user/act
